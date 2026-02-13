@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Liebe 💖</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:radial-gradient(circle at top,#1a1a2e,#16213e,#0f3460);
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+.card{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:20px;
+width:90%;
+max-width:420px;
+margin:auto;
+margin-top:60px;
+box-shadow:0 0 30px pink;
+position:relative;
+}
+
+button{
+padding:12px 20px;
+margin:8px;
+border:none;
+border-radius:40px;
+font-size:15px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+.progress-container{
+width:100%;
+background:rgba(255,255,255,0.2);
+border-radius:20px;
+margin:10px 0;
+}
+.progress-bar{
+height:10px;
+width:0%;
+background:#ff4d6d;
+border-radius:20px;
+transition:width 0.4s ease;
+}
+
+.romantic-img{
+width:100%;
+border-radius:20px;
+margin-top:15px;
+box-shadow:0 0 30px #ff4d6d;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="unlock">
+<h2>💋 Tap to Unlock With a Kiss 💋</h2>
+<button onclick="enter()">Unlock 💖</button>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<div class="card" id="main" style="display:none;">
+<div class="progress-container">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div id="content"></div>
+</div>
+
+<audio id="bgMusic" loop playsinline>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ENTER */
+function enter(){
+document.getElementById("unlock").style.display="none";
+document.getElementById("main").style.display="block";
+document.getElementById("bgMusic").play().catch(()=>{});
+showProposal();
+}
+
+/* PROPOSAL */
+function showProposal(){
+document.getElementById("content").innerHTML=`
+<h2>Will You Be Mine Forever? 💖</h2>
+<button onclick="startQuiz()">YES 💘</button>
+<button id="noBtn">NO 😜</button>
+`;
+
+let noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=function(){
+noBtn.style.position="absolute";
+noBtn.style.left=Math.random()*250+"px";
+noBtn.style.top=Math.random()*150+"px";
+};
+}
+
+/* QUIZ */
+let currentQuestion=0;
+let loveScore=0;
+
+const questions=[
+{q:"When I hug you…",a:[
+{text:"I melt 🥺",score:30},
+{text:"I hold tight 🤗",score:35},
+{text:"Never let go 😌",score:40}
+]},
+{q:"Our future looks like…",a:[
+{text:"Happy 💕",score:30},
+{text:"Unbreakable 💍",score:35},
+{text:"Forever soulmates 💖",score:40}
+]},
+{q:"If I kiss you…",a:[
+{text:"Blush 😳",score:30},
+{text:"Kiss back 💋",score:35},
+{text:"Ask for more 😈",score:40}
+]}
+];
+
+function startQuiz(){
+currentQuestion=0;
+loveScore=0;
+showQuestion();
+}
+
+function showQuestion(){
+if(currentQuestion>=questions.length){ showResult(); return; }
+
+let q=questions[currentQuestion];
+document.getElementById("progressBar").style.width=
+(currentQuestion/questions.length)*100+"%";
+
+let content=document.getElementById("content");
+content.innerHTML=`<h3>Question ${currentQuestion+1}/${questions.length}</h3>
+<h2>${q.q}</h2>`;
+
+q.a.forEach(option=>{
+let btn=document.createElement("button");
+btn.innerText=option.text;
+btn.onclick=function(){
+loveScore+=option.score;
+currentQuestion++;
+showQuestion();
+};
+content.appendChild(btn);
+});
+}
+
+/* RESULT */
+function showResult(){
+document.getElementById("progressBar").style.width="100%";
+let percent=Math.floor(loveScore/(questions.length*40)*100);
+
+document.getElementById("content").innerHTML=`
+<h2>Your Love Score: ${percent}% 💖</h2>
+<img class="romantic-img" src="https://i.ibb.co/XxgNbG23/IMG-4136.jpg">
+<br>
+<button onclick="typeLetter()">Open Love Letter 💌</button>
+<button onclick="startHeartGame()">Play Heart Game 💖</button>
+`;
+
+launchFireworks();
+}
+
+/* LETTER */
+function typeLetter(){
+let text="My Liebe 💖\n\nYou are my heart, my peace, my forever.\nThrough every storm and sunrise,\nI choose you. Always. 💍✨";
+
+let content=document.getElementById("content");
+content.innerHTML="<h2>💌 Love Letter 💌</h2><p id='typing'></p>";
+
+let i=0;
+function typing(){
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,40);
+}else{
+showSecretButton();
+}
+}
+typing();
+}
+
+function showSecretButton(){
+let btn=document.createElement("button");
+btn.innerText="🔐 Secret Surprise";
+btn.onclick=secretEnding;
+document.getElementById("content").appendChild(btn);
+}
+
+function secretEnding(){
+document.getElementById("content").innerHTML+=`
+<h2>You found the secret 😍</h2>
+<p>You are truly my destiny. No escape now 😌💖</p>
+`;
+launchFireworks();
+}
+
+/* ADVANCED HEART GAME */
+function startHeartGame(){
+
+let content=document.getElementById("content");
+content.style.position="relative";
+content.style.height="320px";
+
+let score=0;
+let timeLeft=15;
+let gameRunning=true;
+
+content.innerHTML=`
+<h2>Catch 5 Hearts 💖</h2>
+<p>Time Left: <span id="timer">${timeLeft}</span>s</p>
+<p>Hearts Caught: <span id="score">${score}</span>/5</p>
+`;
+
+let heart=document.createElement("div");
+heart.innerHTML="💖";
+heart.style.position="absolute";
+heart.style.fontSize="50px";
+heart.style.cursor="pointer";
+heart.style.transition="all 0.3s ease";
+content.appendChild(heart);
+
+function moveHeart(){
+if(!gameRunning) return;
+let maxX=content.clientWidth-60;
+let maxY=content.clientHeight-120;
+heart.style.left=Math.random()*maxX+"px";
+heart.style.top=Math.random()*maxY+"px";
+setTimeout(moveHeart,600);
+}
+moveHeart();
+
+heart.onclick=function(){
+if(!gameRunning) return;
+score++;
+document.getElementById("score").innerText=score;
+
+if(navigator.vibrate){
+navigator.vibrate([200,100,200]);
+}
+
+if(score>=5){
+gameRunning=false;
+clearInterval(timerInterval);
+content.innerHTML=`
+<h2>You Won My Heart 😍💖</h2>
+<button onclick="startHeartGame()">Play Again 💞</button>
+`;
+launchFireworks();
+}
+};
+
+let timerInterval=setInterval(function(){
+timeLeft--;
+document.getElementById("timer").innerText=timeLeft;
+if(timeLeft<=0){
+gameRunning=false;
+clearInterval(timerInterval);
+content.innerHTML=`
+<h2>Time's Up 💔</h2>
+<button onclick="startHeartGame()">Try Again 💘</button>
+`;
+}
+},1000);
+}
+
+/* FIREWORKS */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+function launchFireworks(){
+for(let i=0;i<5;i++){
+setTimeout(()=>{
+let x=Math.random()*canvas.width;
+let y=Math.random()*canvas.height/2;
+for(let j=0;j<40;j++){
+ctx.beginPath();
+ctx.arc(x+Math.random()*60-30,y+Math.random()*60-30,3,0,Math.PI*2);
+ctx.fillStyle=`hsl(${Math.random()*360},100%,70%)`;
+ctx.fill();
+}
+},i*400);
+}
+}
+
+</script>
+
+</body>
+</html>
