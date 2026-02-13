@@ -187,7 +187,11 @@ function typeLetter(){
 let text="My Liebe 💖\n\nYou are my heart, my peace, my forever.\nThrough every storm and sunrise,\nI choose you. Always. 💍✨";
 
 let content=document.getElementById("content");
-content.innerHTML="<h2>💌 Love Letter 💌</h2><p id='typing'></p>";
+content.innerHTML=`
+<h2>💌 Love Letter 💌</h2>
+<p id='typing'></p>
+<button onclick="goBackToResult()">⬅ Back 💖</button>
+`;
 
 let i=0;
 function typing(){
@@ -232,6 +236,7 @@ content.innerHTML=`
 <h2>Catch 5 Hearts 💖</h2>
 <p>Time Left: <span id="timer">${timeLeft}</span>s</p>
 <p>Hearts Caught: <span id="score">${score}</span>/5</p>
+<button onclick="goBackToResult()">⬅ Back 💖</button>
 `;
 
 let heart=document.createElement("div");
@@ -306,8 +311,9 @@ ctx.fill();
 },i*400);
 }
 }
-
+function goBackToResult(){
+showResult();
+}
 </script>
-
 </body>
 </html>
